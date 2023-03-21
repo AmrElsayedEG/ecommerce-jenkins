@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  web:
+    volumes:
+      - static:/static
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 8000
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+volumes:
+  static:
+
+# sudo docker-compose up --build
+# sudo docker-compose run test

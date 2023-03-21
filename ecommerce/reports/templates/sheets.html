@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Wareix | Sheets{% endblock %}
+{% block content %}
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4">
+                <span class="text-muted fw-light">Reports /</span>
+                Excel Sheets
+              </h4>
+
+              <div class="row">
+                <!-- Basic Buttons -->
+
+                <div class="col-12">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Products Sheets</h5>
+                    <div class="card-body">
+                      <small class="text-light fw-semibold">All Products</small>
+                      <div class="demo-inline-spacing">
+                        <a href="{% url 'reports:export-sheets' 'all-products' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="col-12">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Orders Sheets</h5>
+                    <div class="card-body">
+                      <div class="row gy-3">
+                        <div class="col-md-6">
+                          <small class="text-light fw-semibold">All Orders</small>
+                          <div class="demo-inline-spacing">
+                            <a href="{% url 'reports:export-sheets' 'all-orders' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <small class="text-light fw-semibold">Current Month Orders</small>
+                          <div class="demo-inline-spacing">
+                            <a href="{% url 'reports:export-sheets' 'current-month-orders' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body">
+                      <div class="row gy-3">
+                        <div class="col-md-6">
+                          <small class="text-light fw-semibold">Last Month Orders</small>
+                          <div class="demo-inline-spacing">
+                            <a href="{% url 'reports:export-sheets' 'last-month-orders' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <small class="text-light fw-semibold">Current Year Orders</small>
+                          <div class="demo-inline-spacing">
+                            <a href="{% url 'reports:export-sheets' 'current-year-orders' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="m-0">
+                    <div class="card-body">
+                      <div class="row gy-3">
+                        <div class="col-md-6">
+                          <small class="text-light fw-semibold">Last Year Orders</small>
+                          <div class="demo-inline-spacing">
+                            <a href="{% url 'reports:export-sheets' 'last-year-orders' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <div class="col-12">
+                  <div class="card mb-4">
+                    <h5 class="card-header">Customers Sheets</h5>
+                    <div class="card-body">
+                      <small class="text-light fw-semibold">All Customers</small>
+                      <div class="demo-inline-spacing">
+                        <a href="{% url 'reports:export-sheets' 'all-customers' %}"><button type="button" class="btn btn-primary">Export Excel Sheet</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+{% endblock %}

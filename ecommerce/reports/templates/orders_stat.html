@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Wareix | Orders Statistics {% endblock %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">Orders Statistics</h4>
+
+  <div class="row">
+
+    <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+      <div class="card">
+        <div class="row row-bordered g-0">
+          <div class="col-md-12">
+            <h5 class="card-header m-0 me-2 pb-3">This Year Orders</h5>
+            <div id="thisYearChart" class="px-2"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-6 col-lg-6 order-2 order-md-3 order-lg-2 mb-4">
+      <div class="card">
+        <div class="row row-bordered g-0">
+          <div class="col-md-12">
+            <h5 class="card-header m-0 me-2 pb-3">This Month Orders</h5>
+            <div id="thisMonthChart" class="px-2"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-6 order-2 order-md-3 order-lg-2 mb-4">
+      <div class="card">
+        <div class="row row-bordered g-0">
+          <div class="col-md-12">
+            <h5 class="card-header m-0 me-2 pb-3">This Week Orders</h5>
+            <div id="thisWeekChart" class="px-2"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+  <div class="row">
+
+    
+    <div class="col-6 col-lg-6 order-2 order-md-3 order-lg-2 mb-4">
+      <div class="card">
+        <div class="row row-bordered g-0">
+          <div class="col-md-12">
+            <h5 class="card-header m-0 me-2 pb-3">Overall Orders</h5>
+            <div id="chart" class="px-2"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+
+  </div>
+
+  <div class="row">
+    <!-- Headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">All Orders</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{all_orders}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Customizing headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">Orders Today</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{today_orders}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">Overall Sales</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{overall_sales}} {{currency.symbol}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Customizing headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">Today Sales</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{today_sales}} {{currency.symbol}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+            {% endblock %}
+
+            
+            {% block scripts %}
+            <script>
+              'use strict';
+              
+              var options = {
+          series: [{
+          data: {{year_chart.data|safe}}
+        }],
+          chart: {
+          height: 350,
+          type: 'bar',
+          events: {
+            click: function(chart, w, e) {
+              // console.log(chart, w, e)
+            }
+          }
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            distributed: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
+        },
+        xaxis: {
+          categories: {{year_chart.date|safe}},
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#thisYearChart"), options);
+        chart.render();
+
+        var options_month = {
+          series: [{
+          data: {{month_chart.data|safe}}
+        }],
+          chart: {
+          height: 350,
+          type: 'bar',
+          events: {
+            click: function(chart, w, e) {
+              // console.log(chart, w, e)
+            }
+          }
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            distributed: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
+        },
+        xaxis: {
+          categories: {{month_chart.date|safe}},
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        }
+        };
+
+      var chart_month = new ApexCharts(document.querySelector("#thisMonthChart"), options_month);
+      chart_month.render();
+              
+        var options_week = {
+          series: [{
+          data: {{week_chart.data|safe}}
+        }],
+          chart: {
+          height: 350,
+          type: 'bar',
+          events: {
+            click: function(chart, w, e) {
+              // console.log(chart, w, e)
+            }
+          }
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: '45%',
+            distributed: true,
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend: {
+          show: false
+        },
+        xaxis: {
+          categories: {{week_chart.date|safe}},
+          labels: {
+            style: {
+              fontSize: '12px'
+            }
+          }
+        }
+        };
+
+      var chart_week = new ApexCharts(document.querySelector("#thisWeekChart"), options_week);
+      chart_week.render();
+
+
+              var options = {
+          series: [{% for i in pie_chart %}{{i.count}},{% endfor %}],
+          chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: ['Pending','Delivering', 'Delivered', 'Cancelled'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+                  </script>
+
+        {% endblock %}

@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block title %}#{{order.order_no}} | Wareix{% endblock %}
+{% block content %}
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Orders /</span> Order : #{{order.order_no}}</h4>
+
+              <!-- Accordion -->
+              <h5 class="mt-4">Order Details ({{order.created|date:'m-d-Y'}})</h5>
+              <h3><span class="badge {% if order.status == 1 %}bg-label-primary{% elif order.status == 2 %}bg-label-warning{% elif order.status == 3 %}bg-label-success{% else %}bg-label-danger{% endif %} me-1">{{order.get_status_display}}</span></h3>
+              <div class="row">
+                <div class="col-md mb-4 mb-md-0">
+                  <div class="accordion mt-3" id="accordionExample">
+                    <div class="card accordion-item active">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button
+                          type="button"
+                          class="accordion-button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#accordionOne"
+                          aria-expanded="true"
+                          aria-controls="accordionOne"
+                        >
+                          Ordered Items
+                        </button>
+                        <a href="{% url 'reports:order-pdf' order.id %}"><button type="button" class="btn btn-outline-success">Download Invoice</button></a>
+                      </h2>
+
+                      <div
+                        id="accordionOne"
+                        class="accordion-collapse collapse show"
+                        data-bs-parent="#accordionExample"
+                      >
+                        <div class="accordion-body">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    {% for item in items %}
+                                  <tr class="table-normal">
+                                    <td><i class="fab fa-sketch fa-lg text-warning me-3"></i>{{item.product__title}}</td>
+                                    <td>{{item.product__category__title}}</td>
+                                    <td>{{item.type}} </td>
+                                    <td>{{item.price}}</td>
+                                    <td>{{item.quantity}}{{order.currency.symbol}}</td>
+                                    <td>{% widthratio item.quantity 1 item.price %}{{order.currency.symbol}}</td>
+                                  </tr>
+                                  {% endfor %}
+                                  <tr class="table-normal">
+                                    <td><i class="fab fa-sketch fa-lg text-warning me-3"></i> <strong>Total</strong></td>
+                                    <td></td>
+                                    <td>Coupon:{% if order.coupon %}{{order.coupon.discount}}{% if order.coupon.discount_type == 'PER' %}%{% else %}{{order.currency.symbol}}{% endif %}{% else %}-{% endif %}</td>
+                                    <td>Shipping:{% if order.shipping_fees %}{{order.shipping_fees.amount}}{{order.currency.symbol}}{% else %}-{% endif %}</td>
+                                    <td></td>
+                                    <td>Cost:{{order.total_cost}}{{order.currency.symbol}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card accordion-item">
+                      <h2 class="accordion-header" id="headingTwo">
+                        <button
+                          type="button"
+                          class="accordion-button collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#accordionTwo"
+                          aria-expanded="false"
+                          aria-controls="accordionTwo"
+                        >
+                          User Details
+                        </button>
+                      </h2>
+                      <div
+                        id="accordionTwo"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingTwo"
+                        data-bs-parent="#accordionExample"
+                      >
+                        <div class="accordion-body">
+                            <strong>Name:</strong> {{order.customer.first_name}} {{order.customer.last_name}}<br>
+                            <strong>Email:</strong> {{order.customer.email}}<br>
+                            <strong>Phone:</strong> {{order.customer.phone}}<br>
+                            <strong>Country & City:</strong> {{order.address.country.country}} - {{order.address.city.city}}<br>
+                            <strong>Address 1:</strong> {{order.address.address_1}}<br>
+                            <strong>Address 2:</strong> {{order.address.address_2}}<br>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card accordion-item">
+                      <h2 class="accordion-header" id="headingThree">
+                        <button
+                          type="button"
+                          class="accordion-button collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#accordionThree"
+                          aria-expanded="false"
+                          aria-controls="accordionThree"
+                        >
+                          Order Notes
+                        </button>
+                      </h2>
+                      <div
+                        id="accordionThree"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="headingThree"
+                        data-bs-parent="#accordionExample"
+                      >
+                        <div class="accordion-body">
+                          {{order.notes}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              <!--/ Accordion -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal" style="margin-top: 1%">
+                Change Order Status
+              </button>
+              <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <form method="post">
+                    {% csrf_token %}
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel1">Change Order #{{order.order_no}} Status</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col mb-3">
+                          <label for="nameBasic" class="form-label">Status</label>
+                          <select name="status" id="status" class="form-control">
+                          <option value="1"{% if order.status == 1 %} selected {% endif %}>قيد المراجعة</option>
+                          <option value="2" {% if order.status == 2 %} selected {% endif %}>مع المندوب</option>
+                          <option value="3"{% if order.status == 3 %} selected {% endif %}>تم التسليم</option>
+                          <option value="4"{% if order.status == 4 %} selected {% endif %}>ملغي</option>
+                        </select> 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                      </button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+              </div>
+              <!--/ Advance Styling Options -->
+            </div>
+            <!-- / Content -->
+{% endblock %}

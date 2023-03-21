@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Example 1</title>
+    <style>
+        @page {
+		size: A4;
+	}
+      .clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+a {
+  color: #5D6975;
+  text-decoration: underline;
+}
+
+body {
+  position: relative;
+  color: #001028;
+  background: #FFFFFF; 
+  font-family: Arial, sans-serif; 
+  font-size: 12px; 
+  font-family: Arial;
+}
+
+header {
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
+
+#logo {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#logo img {
+  width: 90px;
+}
+
+h1 {
+  border-top: 1px solid  #5D6975;
+  border-bottom: 1px solid  #5D6975;
+  color: #5D6975;
+  font-size: 2.4em;
+  line-height: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  margin: 0 0 20px 0;
+  background: url({% static 'img/pdf/order-pdf-img.png' %});
+}
+
+#project {
+  float: left;
+}
+
+#project span {
+  color: #5D6975;
+  text-align: right;
+  width: 52px;
+  margin-right: 10px;
+  display: inline-block;
+  font-size: 0.8em;
+}
+
+#company {
+  float: right;
+  text-align: right;
+}
+
+#project div,
+#company div {
+  white-space: nowrap;        
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+table tr:nth-child(2n-1) td {
+  background: #F5F5F5;
+}
+
+table th,
+table td {
+  text-align: center;
+}
+
+table th {
+  padding: 5px 20px;
+  color: #5D6975;
+  border-bottom: 1px solid #C1CED9;
+  white-space: nowrap;        
+  font-weight: normal;
+}
+
+table .service,
+table .desc {
+  text-align: left;
+}
+
+table td {
+  padding: 20px;
+  text-align: right;
+}
+
+table td.service,
+table td.desc {
+  vertical-align: top;
+}
+
+table td.unit,
+table td.qty,
+table td.total {
+  font-size: 1.2em;
+}
+
+table td.grand {
+  border-top: 1px solid #5D6975;;
+}
+
+#notices .notice {
+  color: #5D6975;
+  font-size: 1.2em;
+}
+
+footer {
+  color: #5D6975;
+  width: 100%;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid #C1CED9;
+  padding: 8px 0;
+  text-align: center;
+}
+    </style>
+  </head>
+  <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="{% static 'img/logo.png' %}">
+      </div>
+      <h1>INVOICE #{{order.order_no}}</h1>
+      
+      <div id="project">
+        <div><span>Name</span> {{order.customer.first_name}} {{order.customer.last_name}}</div>
+        <div><span>Phone</span> {{order.customer.phone}}</div>
+        <div><span>ADDRESS 1</span> {{order.address.country.country}}, {{order.address.city.city}}</div>
+        <div><span>ADDRESS 2</span> {{order.address.address_1}}, {{order.address.address_2}}</div>
+        <div><span>EMAIL</span>{{order.customer.email}}</div>
+        <div><span>DATE</span> {{order.created|date:'m-d-Y'}}</div>
+      </div>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th class="service">Product</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>QTY</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+          <tr>
+            <td class="service">{{item.product.title}}</td>
+            <td class="unit">{{item.type}}</td>
+            <td class="unit">{{item.price}}</td>
+            <td class="qty">{{item.quantity}}</td>
+            <td class="total">{% widthratio item.quantity 1 item.price %}{{order.currency.symbol}}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="4">Discount</td>
+            <td class="total">{% if order.coupon %}{{order.coupon.discount}}{% if order.coupon.discount_type == 'PER' %}%{% else %}{{order.currency.symbol}}{% endif %}{% else %}0{% endif %}</td>
+          </tr>
+          <tr>
+            <td colspan="4">Shipping Fees</td>
+            <td class="total">{% if order.shipping_fees %}{{order.shipping_fees.amount}}{% else %}0{% endif %}{{order.currency.symbol}}</td>
+          </tr>
+          <tr>
+            <td colspan="4" class="grand total">GRAND TOTAL</td>
+            <td class="grand total">{{order.total_cost}}{{order.currency.symbol}}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </main>
+    
+  </body>
+</html>

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Wareix | All Orders{% endblock %}
+
+{% block content %}
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Orders /</span> All Orders</h4>
+
+              <!-- Basic Bootstrap Table -->
+
+              <div class="card">
+                <div class="table-responsive text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Total Cost</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      {% for order in orders %}
+                      <tr class="table-normal">
+                        <td><i class="fab fa-sketch fa-lg text-warning me-3"></i> <strong>{{order.id}}</strong></td>
+                        <td>{{order.customer.first_name}} {{order.customer.last_name}}</td>
+                        <td>{{order.created|date:'m-d-Y'}} </td>
+                        <td>{{order.total_cost}} {{order.currency.symbol}}</td>
+                        <td><span class="badge {% if order.status == 1 %}bg-label-primary{% elif order.status == 2 %}bg-label-warning{% elif order.status == 3 %}bg-label-success{% else %}bg-label-danger{% endif %} me-1">
+                          {{order.get_status_display}}</span></td>
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                              <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{% url 'reports:one-order' order.order_no %}"><i class="bx bx-edit-alt me-1"></i>View & Edit</a>
+                              <a class="dropdown-item" href="{% url 'reports:order-pdf' order.id %}"><i class="bx bx-edit-alt me-1"></i>Download Invoice</a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              
+              <!--/ Basic Bootstrap Table -->
+
+              <!--/ Responsive Table -->
+              <nav aria-label="Page navigation" style="padding-top: 1%;">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item prev">
+                    <a class="page-link" href="?page=1"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                  </li>
+                  {% for p_r in pagin_range %}
+                  <li class="page-item {% if page_number == p_r %}active{% endif %}">
+                    <a class="page-link" href="?page={{p_r}}">{{p_r}}</a>
+                  </li>
+                  {% endfor %}
+                  <li class="page-item next">
+                    <a class="page-link" href="?page={{ orders.paginator.num_pages }}"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <!-- / Content -->
+
+            
+{% endblock %}

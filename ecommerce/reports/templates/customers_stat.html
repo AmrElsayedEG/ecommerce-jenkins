@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Wareix | Customers Statistics {% endblock %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+  <h4 class="fw-bold py-3 mb-4">Customers Statistics</h4>
+
+  <div class="row">
+
+    <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+      <div class="card">
+        <div class="row row-bordered g-0">
+          <div class="col-md-12">
+            <h5 class="card-header m-0 me-2 pb-3">New customers this year</h5>
+            <div id="totalUsersChart" class="px-2"></div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <!-- Headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">All Registered Customers</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{all_users}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Customizing headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">Users Logged in Today</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{active_users}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <!-- Headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">New Customers This Month</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{new_users_month}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Customizing headings -->
+    <div class="col-lg">
+      <div class="card mb-4">
+        <h1 class="card-header" style="text-align: center;">Users Ordered Today</h1>
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <td class="py-3">
+                <h1 class="mb-0" style="text-align: center;">{{ordered_today}}</h1>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+            {% endblock %}
+
+            
+            {% block scripts %}
+            <script>
+              'use strict';
+              
+              (function () {
+                let cardColor, headingColor, axisColor, shadeColor, borderColor;
+              
+                cardColor = config.colors.white;
+                headingColor = config.colors.headingColor;
+                axisColor = config.colors.axisColor;
+                borderColor = config.colors.borderColor;
+              
+                // --------------------------------------------------------------------
+                const totalRevenueChartEl = document.querySelector('#totalUsersChart'),
+                  totalRevenueChartOptions = {
+                    series: [
+                      {
+                        name: 'Customers',
+                        data: {{chart.data|safe}}
+                      },
+                    ],
+                    chart: {
+                      height: 300,
+                      stacked: true,
+                      type: 'bar',
+                      toolbar: { show: false }
+                    },
+                    plotOptions: {
+                      bar: {
+                        horizontal: false,
+                        columnWidth: '33%',
+                        borderRadius: 12,
+                        startingShape: 'rounded',
+                        endingShape: 'rounded'
+                      }
+                    },
+                    colors: [config.colors.primary, config.colors.info],
+                    dataLabels: {
+                      enabled: false
+                    },
+                    stroke: {
+                      curve: 'smooth',
+                      width: 6,
+                      lineCap: 'round',
+                      colors: [cardColor]
+                    },
+                    legend: {
+                      show: true,
+                      horizontalAlign: 'left',
+                      position: 'top',
+                      markers: {
+                        height: 8,
+                        width: 8,
+                        radius: 12,
+                        offsetX: -3
+                      },
+                      labels: {
+                        colors: axisColor
+                      },
+                      itemMargin: {
+                        horizontal: 10
+                      }
+                    },
+                    grid: {
+                      borderColor: borderColor,
+                      padding: {
+                        top: 0,
+                        bottom: -8,
+                        left: 20,
+                        right: 20
+                      }
+                    },
+                    xaxis: {
+                      categories: {{chart.date|safe}},
+                      labels: {
+                        style: {
+                          fontSize: '13px',
+                          colors: axisColor
+                        }
+                      },
+                      axisTicks: {
+                        show: false
+                      },
+                      axisBorder: {
+                        show: false
+                      }
+                    },
+                    yaxis: {
+                      labels: {
+                        style: {
+                          fontSize: '13px',
+                          colors: axisColor
+                        }
+                      }
+                    },
+                    states: {
+                      hover: {
+                        filter: {
+                          type: 'none'
+                        }
+                      },
+                      active: {
+                        filter: {
+                          type: 'none'
+                        }
+                      }
+                    }
+                  };
+                if (typeof totalRevenueChartEl !== undefined && totalRevenueChartEl !== null) {
+                  const totalRevenueChart = new ApexCharts(totalRevenueChartEl, totalRevenueChartOptions);
+                  totalRevenueChart.render();
+                }
+               
+              })();
+              
+                  </script>
+
+        {% endblock %}
