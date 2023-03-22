@@ -1,4 +1,4 @@
-## Ecommerce [Web Dashboard + API's for Mobile Apps] ![Django](https://img.shields.io/badge/Django-yellow.svg) ![Rest API](https://img.shields.io/badge/RestFul%20API-yellow.svg)
+## Ecommerce [Web Dashboard + API's for Mobile Apps] ![Django](https://img.shields.io/badge/Django-yellow.svg) ![Rest API](https://img.shields.io/badge/RestFul%20API-yellow.svg) ![Celery](https://img.shields.io/badge/celery-green.svg)
 
 
 ## Table of contents
@@ -15,6 +15,8 @@
 Project is created with:
 * Django: 3.2
 * Django Rest Framework: 3.12
+* Celery
+* Redis Image
 * And other important tools listed in requirements.txt file
 	
 ## Run
