@@ -2,15 +2,14 @@ from orders.serializers import CreateOrderSerializer, OrderDetailsSerializer, Ca
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from utils import IsAuthenticated
 from rest_framework.response import Response
-from django.db.transaction import atomic
 from orders.models import Order
 from datetime import datetime
+from orders.tasks import order_submit_email
 
 class CreateOrderView(CreateAPIView):
     serializer_class = CreateOrderSerializer
     permission_classes = [IsAuthenticated,]
 
-    @atomic
     def post(self, request, *args, **kwargs):
             order = self.serializer_class(data=request.data, context={'request' : self.request})
             if not order.is_valid():
@@ -28,10 +27,12 @@ class CreateOrderView(CreateAPIView):
                 else:
                     error = order.errors
                 return Response(error, status=400)
-            order.save()
+            order = order.save()
             # save lsat order date
             self.request.user.last_order = datetime.now()
             self.request.user.save()
+            # Send email
+            order_submit_email.delay(order.customer.first_name, order.customer.email)
             return Response({
                     'success': "Order created successfully",
                     'success_ar': "تم إنشاء الطلب بنجاح",

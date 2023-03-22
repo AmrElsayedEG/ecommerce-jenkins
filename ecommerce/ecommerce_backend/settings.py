@@ -162,12 +162,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Email Settings
-EMAIL_BACKEND = "SECRET"
-EMAIL_HOST = "SECRET"
-EMAIL_HOST_USER = "SECRET"
-EMAIL_HOST_PASSWORD = "SECRET"
-EMAIL_PORT = "SECRET"
-EMAIL_USE_TLS = "SECRET"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'bookshallstore@gmail.com'
+EMAIL_HOST_PASSWORD = 'iquugdlauyumbzwe' #BooksHallStore
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 WEBSITE_NAME = "Ecommerce Standard"
 
@@ -179,3 +179,6 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": True,
     "TOKEN_OBTAIN_SERIALIZER": "authenticate.serializers.CustomTokenObtainPairSerializer",
 }
+
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"

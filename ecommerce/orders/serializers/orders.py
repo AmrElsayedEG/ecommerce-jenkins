@@ -10,6 +10,8 @@ from datetime import timedelta
 from users.serializers import AddressSerializer
 from main.models import Currency
 from main.serializers import CurrencySerializer
+from django.db.transaction import atomic
+
 logger = logging.getLogger(__name__)
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -58,6 +60,7 @@ class CreateOrderSerializer(serializers.Serializer):
             raise serializers.ValidationError(self.error_msgs['error'])
         return attrs
 
+    # @atomic
     def create(self, validated_data):
         order = validated_data.get('order')
         items = validated_data.get('items')
@@ -82,8 +85,6 @@ class CreateOrderSerializer(serializers.Serializer):
             items_list.append(OrderItem(**item, order=order_instance))
 
         items_objects = OrderItem.objects.bulk_create(items_list)
-
-        order_instance.order_submit_email()
 
         return order_instance
 

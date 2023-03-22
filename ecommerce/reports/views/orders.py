@@ -6,7 +6,7 @@ from reports.generators import orders_statistics_per_month_order, statistics_fil
 from django.db.models import Count
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from weasyprint import HTML
+# from weasyprint import HTML
 import tempfile
 from django.template.loader import render_to_string
 from main.models import Currency
@@ -89,8 +89,8 @@ def order_pdf(request, id):
     if not order:
         return redirect('reports:unauthorized')
     template = render_to_string("order-pdf.html", {'pagesize':'A3', 'order' : order, 'items' : order.ordered_items.all().select_related('product')})
-    html = HTML(string=template, base_url=request.build_absolute_uri())
-    result = html.write_pdf()
+    # html = HTML(string=template, base_url=request.build_absolute_uri())
+    result = None #html.write_pdf()
     response = HttpResponse(content_type='application/pdf;')
     response['Content-Disposition'] = f'attachment; filename=order-{order.order_no}.pdf'
     response['Content-Transfer-Encoding'] = 'binary'
