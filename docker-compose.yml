@@ -1,20 +1,49 @@
 version: '3.7'
 services:
+
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  # Celery
+  celery:
+    restart: always
+    build: 
+      context: .
+    command: celery --app=ecommerce_backend.celery:app worker --loglevel=INFO --concurrency=2 -B
+    volumes:
+      - .:/ecommerce
+    container_name: celery
+    depends_on:
+      - redis
+      - web
+
+  # Django App
   web:
     volumes:
-      - static:/static
+      - ./ecommerce/:/app/
+      - static:/app/staticfiles/
     env_file:
       - .env
     build:
       context: .
       dockerfile: Dockerfile
+    command: >
+            sh -c "/scripts/entrypoint.sh;
+            /scripts/runserver.sh;
+            "
     expose:
       - 8000
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
 
+  # Nginx
   nginx:
     build: ./nginx
     volumes:
-      - static:/static
+      - static:/home/app/staticfiles
     ports:
       - "80:80"
     depends_on:
