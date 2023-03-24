@@ -2,14 +2,16 @@ from orders.serializers import CreateOrderSerializer, OrderDetailsSerializer, Ca
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from utils import IsAuthenticated
 from rest_framework.response import Response
+from django.db.transaction import atomic
 from orders.models import Order
 from datetime import datetime
-from orders.tasks import order_submit_email
+from django.utils.translation import gettext_lazy as _
 
 class CreateOrderView(CreateAPIView):
     serializer_class = CreateOrderSerializer
     permission_classes = [IsAuthenticated,]
 
+    @atomic
     def post(self, request, *args, **kwargs):
             order = self.serializer_class(data=request.data, context={'request' : self.request})
             if not order.is_valid():
@@ -21,21 +23,17 @@ class CreateOrderView(CreateAPIView):
                         if item.get('item'):
                             error.append(item['item'][0].title())
                     error = {
-                        'error' : [f'These items above the in stock number, {error}'],
-                        'error_ar' : [f'{error} ,الكمية المطلوبة من هذه المنتجات أكبر من الكمية المتاحة']
+                        'error' : [_('One or more items above the in stock number')]
                     }
                 else:
                     error = order.errors
                 return Response(error, status=400)
-            order = order.save()
+            order.save()
             # save lsat order date
             self.request.user.last_order = datetime.now()
             self.request.user.save()
-            # Send email
-            order_submit_email.delay(order.customer.first_name, order.customer.email)
             return Response({
-                    'success': "Order created successfully",
-                    'success_ar': "تم إنشاء الطلب بنجاح",
+                    'success': [_("Order created successfully")]
             })
 
 class MyOrdersView(ListAPIView):

@@ -52,8 +52,7 @@ class CreateOrderTestCase(APITestCase):
         self.client.force_authenticate(self.customer)
         response = self.client.post(self.url, data=data, format='json')
         error = {
-            'error' : ['There is no items in your order'],
-            'error_ar' : ['لا توجد منتجات فى الطلب']
+            'error' : ['There is no items in your order']
         }
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), error)
@@ -76,8 +75,7 @@ class CreateOrderTestCase(APITestCase):
             }
         self.client.force_authenticate(self.customer)
         response = self.client.post(self.url, data=data, format='json')
-        error = {'error': [f"These items above the in stock number, ['{product.title}']"], 
-                'error_ar': [f"['{product.title}'] ,الكمية المطلوبة من هذه المنتجات أكبر من الكمية المتاحة"]}
+        error = {'error': ["One or more items above the in stock number"]}
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), error)
 
@@ -102,8 +100,7 @@ class CreateOrderTestCase(APITestCase):
         self.client.force_authenticate(self.customer)
         response = self.client.post(self.url, data=data, format='json')
         error = {
-            'error' : ['A coupon you are using is invalid or expired'],
-            'error_ar' : ['الكوبون المستخدم ربما منتهي الصلاحية أو لم تستوفي الشروط']
+            'error' : ['A coupon you are using is invalid or expired']
         }
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), error)
@@ -130,8 +127,7 @@ class CreateOrderTestCase(APITestCase):
         self.client.force_authenticate(self.customer)
         response = self.client.post(self.url, data=data, format='json')
         error = {
-            'error' : ['A coupon you are using is invalid or expired'],
-            'error_ar' : ['الكوبون المستخدم ربما منتهي الصلاحية أو لم تستوفي الشروط']
+            'error' : ['A coupon you are using is invalid or expired']
         }
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.json(), error)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-24 15:18+0200\n"
+"POT-Creation-Date: 2023-03-24 16:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,3 +30,11 @@ msgstr "لا توجد منتجات فى الطلب"
 #: orders/serializers/orders.py:104
 msgid "This order can't be edited, Please contact the support"
 msgstr "هذا الطلب لايمكن تعديله، برجاء مراجعة الدعم الفني"
+
+#: orders/views/orders.py:26
+msgid "One or more items above the in stock number"
+msgstr "برجاء حذف المنتجات من السلة وإعادة إضافتها"
+
+#: orders/views/orders.py:36
+msgid "Order created successfully"
+msgstr "تم إنشاء الطلب بنجاح"

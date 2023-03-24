@@ -5,6 +5,7 @@ pipeline{
         {
             steps{
                 sh '''
+                docker-compose -f docker-compose-test.yml build test
                 docker-compose -f docker-compose-test.yml run test
                 '''
             }
