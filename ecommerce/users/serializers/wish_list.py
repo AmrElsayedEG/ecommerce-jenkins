@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import WishList
 from products.serializers import WishListProductSerializer
+from django.utils.translation import gettext_lazy as _
 
 class WishListSerializer(serializers.ModelSerializer):
     product = WishListProductSerializer()
@@ -12,8 +13,7 @@ class WishListSerializer(serializers.ModelSerializer):
 class CreateWishListSerializer(serializers.ModelSerializer):
     error_msg = {
         'dublicate' : {
-            'error' : 'This product is already in your wishlist',
-            'error_ar' : 'هذا المنتج موجود بالقائمة بالفعل'
+            'error' : _('This product is already in your wishlist'),
         }
     }
     class Meta:

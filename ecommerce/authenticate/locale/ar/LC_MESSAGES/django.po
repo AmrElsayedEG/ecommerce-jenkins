@@ -1,0 +1,49 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-24 15:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: authenticate/serializers/jwt.py:7 authenticate/serializers/login.py:13
+msgid "Invalid email or Password"
+msgstr "خطأ فى البيانات المدخلة"
+
+#: authenticate/serializers/login.py:16
+msgid "This account is not activated, Please contact the manager."
+msgstr "هذا الحساب غير مفعل، برجاء التواصل مع المدير."
+
+#: authenticate/serializers/password.py:14
+msgid "A user with that email or phone not found"
+msgstr "لا يوجد مستخدم مسجل بهذا البريد الإلكترونى أو رقم الهاتف"
+
+#: authenticate/serializers/password.py:17
+msgid "An error occured while sending email, Please contact support"
+msgstr "حدث خطأ، برجاء مراجعة الدعم الفني"
+
+#: authenticate/serializers/password.py:52
+#: authenticate/serializers/password.py:67
+msgid "Invalid token"
+msgstr "خطأ في الكود"
+
+#: authenticate/serializers/password.py:70
+msgid "Passwords doesn't match"
+msgstr "كلمتي المرور ليستا متطابقتين"
+
+#: authenticate/serializers/register.py:12
+msgid "A user with this email already exists"
+msgstr "يوجد مستخدم مسجل مسبقاً بهذا البريد الالكتروني"

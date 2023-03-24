@@ -1,9 +1,10 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.utils.translation import gettext_lazy as _
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     default_error_messages = {
         "no_active_account": {
-            "error" : ["Invalid email or Password"],
+            "error" : [_("Invalid email or Password")],
             "error_ar" : ["خطأ في البريد الإلكترونى أو كلمة السر"]
         }
     }

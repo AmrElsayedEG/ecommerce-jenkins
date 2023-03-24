@@ -4,18 +4,17 @@ from utils import send_email, UpdatePasswordMixin
 from django.db.models import Q
 import logging
 from django.utils.crypto import get_random_string
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
 class ForgetPasswordRequestSerializer(serializers.Serializer):
     error_msg = {
         "email": {
-            "error" : "A user with that email or phone not found",
-            "error_ar" : "لا يوجد مستخدم مسجل بهذا البريد الإلكترونى أو رقم الهاتف"
+            "error" : _("A user with that email or phone not found"),
         },
         "send_error" : {
-            "error" : "An error occured while sending email, Please contact support",
-            "error_ar" : "حدث خطأ، برجاء مراجعة الدعم الفني"
+            "error" : _("An error occured while sending email, Please contact support"),
         }
     }
     email = serializers.CharField(help_text="Enter email here", required=True)
@@ -50,8 +49,7 @@ class ForgetPasswordRequestSerializer(serializers.Serializer):
 class CheckForgetPasswordTokenSerializer(serializers.Serializer):
     error_msg = {
         "token" : {
-            "error" : "Invalid token",
-            "error_ar" : "خطأ في الكود"
+            "error" : _("Invalid token"),
         }
     }
     token = serializers.CharField(required=True)
@@ -66,12 +64,10 @@ class CheckForgetPasswordTokenSerializer(serializers.Serializer):
 class SetForgetPasswordSerializer(UpdatePasswordMixin, serializers.Serializer):
     error_msg = {
         "token" : {
-            "error" : "Invalid token",
-            "error_ar" : "خطأ في الكود"
+            "error" : _("Invalid token"),
         },
         "doesnt_match" : {
-            "error" : "Passwords doesn\'t match",
-            "error_ar" : "كلمتي المرور ليستا متطابقتين"
+            "error" : _("Passwords doesn\'t match"),
         },
     }
     token = serializers.CharField(required=True)

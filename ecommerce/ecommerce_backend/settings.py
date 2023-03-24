@@ -66,6 +66,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -132,7 +133,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+LANGUAGES = [
+    ('en', 'English'),
+    ('ar', 'Arabic')
+]
+LOCALE_PATHS = (
+    BASE_DIR / "authenticate/locale/",
+    BASE_DIR / "ecommerce_backend/locale/",
+    BASE_DIR / "main/locale/",
+    BASE_DIR / "orders/locale/",
+    BASE_DIR / "products/locale/",
+    BASE_DIR / "reports/locale/",
+    BASE_DIR / "users/locale/",
+    BASE_DIR / "utils/locale/",
+)
 
 TIME_ZONE = 'Africa/Cairo'
 
@@ -164,8 +179,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'bookshallstore@gmail.com'
-EMAIL_HOST_PASSWORD = 'iquugdlauyumbzwe' #BooksHallStore
+EMAIL_HOST_USER = 'email@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

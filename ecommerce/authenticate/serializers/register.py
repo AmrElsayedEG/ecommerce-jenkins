@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import User
 import logging
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
@@ -8,8 +9,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     error_msg = {
         'exists' : {
-            'error' : 'A user with this email already exists',
-            'error_ar' : 'يوجد مستخدم مسجل مسبقاً بهذا البريد الالكتروني'
+            'error' : _('A user with this email already exists'),
         }
     }
     class Meta:

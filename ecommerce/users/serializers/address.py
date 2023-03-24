@@ -2,6 +2,7 @@ from rest_framework import serializers
 from users.models import Address, City, Country
 from main.models import ShippingFee
 from main.serializers import ShippingFeeSerializer
+from django.utils.translation import gettext_lazy as _
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,8 +17,7 @@ class CitySerializer(serializers.ModelSerializer):
 class AddressSerializer(serializers.ModelSerializer):
     error_msg = {
         'dublicate' : {
-            'error' : 'This address is already registered',
-            'error_ar' : 'هذا العنوان مسجل بالفعل'
+            'error' : _('This address is already registered'),
         }
     }
     class Meta:

@@ -10,15 +10,14 @@ from datetime import timedelta
 from users.serializers import AddressSerializer
 from main.models import Currency
 from main.serializers import CurrencySerializer
-from django.db.transaction import atomic
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
 class OrderSerializer(serializers.ModelSerializer):
     error_msgs = {
         'error' : {
-            'error' : 'A coupon you are using is invalid or expired',
-            'error_ar' : 'الكوبون المستخدم ربما منتهي الصلاحية أو لم تستوفي الشروط'
+            'error' : _('A coupon you are using is invalid or expired'),
         }
     }
     class Meta:
@@ -48,8 +47,7 @@ class OrderSerializer(serializers.ModelSerializer):
 class CreateOrderSerializer(serializers.Serializer):
     error_msgs = {
         'error' : {
-            'error' : 'There is no items in your order',
-            'error_ar' : 'لا توجد منتجات فى الطلب'
+            'error' : _('There is no items in your order'),
         }
     }
     order = OrderSerializer()
@@ -60,7 +58,6 @@ class CreateOrderSerializer(serializers.Serializer):
             raise serializers.ValidationError(self.error_msgs['error'])
         return attrs
 
-    # @atomic
     def create(self, validated_data):
         order = validated_data.get('order')
         items = validated_data.get('items')
@@ -86,6 +83,8 @@ class CreateOrderSerializer(serializers.Serializer):
 
         items_objects = OrderItem.objects.bulk_create(items_list)
 
+        order_instance.order_submit_email()
+
         return order_instance
 
 class OrderDetailsSerializer(serializers.ModelSerializer):
@@ -102,8 +101,7 @@ class OrderDetailsSerializer(serializers.ModelSerializer):
 class CancelOrderSerializer(serializers.ModelSerializer):
     error_msg = {
         'reject' : {
-            'error' : 'This order can\'t be edited, Please contact the support',
-            'error_ar' : 'هذا الطلب لايمكن تعديله، برجاء مراجعة الدعم الفني'
+            'error' : _('This order can\'t be edited, Please contact the support'),
         }
     }
     class Meta:

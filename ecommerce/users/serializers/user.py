@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from users.models import User
+from django.utils.translation import gettext_lazy as _
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,8 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserEmailSerializer(serializers.ModelSerializer):
     error_msg = {
         'dublicate' : {
-            'error' : 'An account with that email exists',
-            'error_ar' : 'يوجد حساب مسجل بهذا البريد'
+            'error' : _('An account with that email exists'),
         }
     }
     class Meta:
@@ -26,12 +26,10 @@ class UserEmailSerializer(serializers.ModelSerializer):
 class EmailTokenSerializer(serializers.Serializer):
     error_msg = {
         "token" : {
-            "error" : "Invalid token",
-            "error_ar" : "خطأ في الكود"
+            "error" : _("Invalid token"),
         },
         'dublicate' : {
-            'error' : 'An account with that email exists',
-            'error_ar' : 'يوجد حساب مسجل بهذا البريد'
+            'error' : _('An account with that email exists'),
         }
     }
     email = serializers.CharField(required=True)

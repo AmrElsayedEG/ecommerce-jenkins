@@ -2,6 +2,7 @@ from rest_framework import serializers
 from users.models import User
 import logging
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
@@ -9,12 +10,10 @@ class LoginSerializer(serializers.ModelSerializer):
 
     error_msg = {
         "login" : {
-            "error" : "Invalid email or Password",
-            "error_ar" : "خطأ في البريد الإلكترونى أو كلمة السر"
+            "error" : _("Invalid email or Password"),
         },
         "not_active" : {
-            "error" : "This account is not activated, Please contact the manager.",
-            "error_ar" : "هذا الحساب غير مفعل، برجاء التواصل مع المدير."
+            "error" : _("This account is not activated, Please contact the manager."),
         },
     }
 
