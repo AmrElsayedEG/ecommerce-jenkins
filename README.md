@@ -27,6 +27,11 @@ $ pip install requirements.txt
 $ python manage.py runserver
 ```
 
+Make sure to run the test cases in cause any feature will be added to maintain the system processes
+```
+$ python manage.py test
+```
+
 To run it using Docker follow these steps (Port 80):
 
 ```
@@ -34,3 +39,10 @@ $ docker-compose up --build -d
 ```
 
 You also can run this project using Jenkins and it will run on port 80
+
+To run the test cases using Docker:
+
+```
+$ docker-compose -f docker-compose-test.yml build test
+$ docker-compose -f docker-compose-test.yml run test
+```
